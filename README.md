@@ -14,6 +14,18 @@ The World Bank's Prospects Group has built a global inflation database. The data
 
 The database also provides aggregate inflation for the global economy, advanced economies, and emerging and developing market economies, as well as global commodity price measures. In my case, I have only used the data on Energy CPI inflation.
 
+# Development of the work
+
+All this work was developed by connecting Grafana with MongoDB. The presentation demonstrates how this entire connection is set up and visualized.
+
+
+
+
+
+
+
+
+
 
 
 

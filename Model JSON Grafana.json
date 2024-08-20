@@ -1,0 +1,1674 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"${Paese}\",\r\n      \"year\": ${Year}\r\n    }\r\n  },\r\n  {\r\n    \"$lookup\": {\r\n      \"from\": \"inflation\",\r\n      \"localField\": \"country\",\r\n      \"foreignField\": \"Country\",\r\n      \"as\": \"inflacion_correspondiente\"\r\n    }\r\n  },\r\n {\r\n    \"$unwind\": \"$inflacion_correspondiente\"\r\n  },\r\n  {\r\n    \"$project\": {\r\n      \"country\": \"${Paese}\",\r\n      \"year\": \"${Year}\",\r\n      \"Energia per capita\": {\r\n        \"$ifNull\":[\"$energy_per_capita\",\"Niente\"]\r\n        },\r\n      \"Inflazione\": {\r\n        \"$ifNull\":[\"$inflacion_correspondiente.${Year}\",\"Niente\"]\r\n        }\r\n    }\r\n  }\r\n]",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "year",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Inflazione ed energia per capita",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "names": [
+                "Energia per capita",
+                "country",
+                "Inflazione"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "\n\n\n# ATTENZIONE:\n\n\nTutti i valori energetici sono trattati in unità\ndi Terawatt/Ora (TWh) e le inflazioni sono un \nvalore senza unità poiché è un valore calcolato\ndalla Banca Mondiale.\nPer ulteriori informazioni sul calcolo, \nvisitare il seguente link: \n\nhttps://thedocs.worldbank.org/en/doc/1ad246272dbbc437c74323719506aa0c-0350012021/related/WP-inflation-database.pdf",
+        "mode": "markdown"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$project\": {\r\n      \"texto\": \"Este es un texto cualquiera\"\r\n    }\r\n  }\r\n]",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "inflation",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 15,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"${Paese}\",\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null, \"$ne\": \"NaN\" },\r\n      \"year\": 2017\r\n    } \r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"2017\",\r\n      \"Domanda de eletticita\": { \"$avg\": \"$electricity_demand\" },\r\n      \"Eletticita biocarburante\": { \"$avg\": \"$biofuel_electricity\" },\r\n      \"Eletticita carbone\": { \"$avg\": \"$coal_electricity\" },\r\n      \"Eletticita fossile\": { \"$avg\": \"$fossil_electricity\" },\r\n      \"Eletticita gas\": { \"$avg\": \"$gas_electricity\" },\r\n      \"Eletticita idroelettrica\": { \"$avg\": \"$hydro_electricity\" },\r\n      \"Eletticita di basso carbon\": { \"$avg\": \"$low_carbon_electricity\" },\r\n      \"Eletticita nuclear\": { \"$avg\": \"$nuclear_electricity\" },\r\n      \"Eletticita petrolio\": { \"$avg\": \"$oil_electricity\" },\r\n      \"Altre Eletticita renovable\": { \"$avg\": \"$other_renewable_electricity\" },\r\n      \"Altre Eletticita renovable no carburante\": { \"$avg\": \"$other_renewable_exc_biofuel_electricity\" },\r\n      \"Eletticita Solar\": { \"$avg\": \"$solar_electricity\" },\r\n      \"Eletticita Eolica\": { \"$avg\": \"$wind_electricity\" }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"${Paese}\",\r\n      \"Domanda_de_elettricita\": { \"$first\": \"$Domanda de eletticita\" },\r\n      \"Total Prodotto\": {\r\n        \"$sum\": { \r\n          \"$add\": [\r\n            \"$Eletticita biocarburante\",\r\n            \"$Eletticita carbone\",\r\n            \"$Eletticita fossile\",\r\n            \"$Eletticita gas\",\r\n            \"$Eletticita idroelettrica\",\r\n            \"$Eletticita di basso carbon\",\r\n            \"$Eletticita nuclear\",\r\n            \"$Eletticita petrolio\",\r\n            \"$Altre Eletticita renovable\",\r\n            \"$Altre Eletticita renovable no carburante\",\r\n            \"$Eletticita Solar\", \r\n            \"$Eletticita Eolica\"\r\n          ] \r\n        }\r\n      }\r\n    }\r\n  }\r\n]",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Domanda vs Prodotta",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Domanda_de_elettricita": 1,
+              "Total Prodotto": 0,
+              "_id": 2
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 16,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"$Paese\",\r\n      \"year\": $Year\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$country\",\r\n      \"Eletticita biocarburante\": { \"$avg\": \"$biofuel_electricity\" },\r\n      \"Eletticita carbone\": { \"$avg\": \"$coal_electricity\" },\r\n      \"Eletticita fossile\": { \"$avg\": \"$fossil_electricity\" },\r\n      \"Eletticita gas\": { \"$avg\": \"$gas_electricity\" },\r\n      \"Eletticita idroelettrica\": { \"$avg\": \"$hydro_electricity\" },\r\n      \"Eletticita di basso carbon\": { \"$avg\": \"$low_carbon_electricity\" },\r\n      \"Eletticita nuclear\": { \"$avg\": \"$nuclear_electricity\" },\r\n      \"Eletticita petrolio\": { \"$avg\": \"$oil_electricity\" },\r\n      \"Altre Eletticita renovable\": { \"$avg\": \"$other_renewable_electricity\" },\r\n      \"Altre Eletticita renovable no carburante\": { \"$avg\": \"$other_renewable_exc_biofuel_electricity\" },\r\n      \"Eletticita Solar\": { \"$avg\": \"$solar_electricity\" },\r\n      \"Eletticita Eolica\": { \"$avg\": \"$wind_electricity\" }\r\n    }\r\n  }\r\n]\r\n\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [
+            "float64"
+          ],
+          "valueFields": [
+            "measurement"
+          ]
+        }
+      ],
+      "title": "Percentuale di energie prodotte nel paese selezionato nell'anno selezionato",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 14,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "never",
+        "stacking": "normal",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null, \"$ne\": \"NaN\" },\r\n      \"year\": { \"$eq\": ${Year} },\r\n      \"country\": {\r\n        \"$nin\": [\r\n          \"America\",\r\n          \"Lower-middle-income countries\",\r\n          \"Europe\",\r\n          \"North America\",\r\n          \"South America\",\r\n          \"High-income countries\",\r\n          \"Asia\",\r\n          \"Africa\",\r\n          \"Oceania\",\r\n          \"World\",\r\n          \"European Union (27)\",\r\n          \"Upper-middle-income countries\"\r\n        ],\r\n        \"$not\": { \"$regex\": \"Ember\" } \r\n      }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$country\",\r\n      \"Domanda di eletticita\": { \"$avg\": \"$electricity_demand\" },\r\n      \"Carbone\": { \"$avg\": \"$coal_electricity\" },\r\n      \"Fossile\": { \"$avg\": \"$fossil_electricity\" },\r\n      \"Gas\": { \"$avg\": \"$gas_electricity\" },\r\n      \"Idroelettrica\": { \"$avg\": \"$hydro_electricity\" },\r\n      \"Nuclear\": { \"$avg\": \"$nuclear_electricity\" },\r\n      \"Petrolio\": { \"$avg\": \"$oil_electricity\" },\r\n      \"Renovable\": { \"$avg\": \"$other_renewable_electricity\" },\r\n      \"Solar\": { \"$avg\": \"$solar_electricity\" },\r\n      \"Eolica\": { \"$avg\": \"$wind_electricity\" }\r\n    }\r\n  },\r\n  {\r\n    \"$sort\": { \"Domanda di eletticita\": -1 }\r\n  },\r\n  {\r\n    \"$limit\": 10\r\n  }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Quali sono le energie dei primi 10 paesi che producono di più?",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Carbone": 1,
+              "Domanda di eletticita": 0,
+              "Eolica": 8,
+              "Fossile": 5,
+              "Gas": 6,
+              "Idroelettrica": 9,
+              "Nuclear": 3,
+              "Petrolio": 2,
+              "Renovable": 4,
+              "Solar": 7,
+              "_id": 10
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 9,
+      "links": [],
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.99,
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"${Paese}\",\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null, \"$ne\": \"NaN\" },\r\n      \"year\": ${Year}\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"${Paese}\",\r\n      \"Domanda de elettricita\": { \"$avg\": \"$electricity_demand\" },\r\n\t    \"Elettricita biocarburante\": { \"$avg\": \"$biofuel_electricity\" },\r\n\t    \"Elettricita carbone\": { \"$avg\": \"$coal_electricity\" },\r\n      \"Elettricita fossile\": { \"$avg\": \"$fossil_electricity\" },\r\n      \"Elettricita gas\": { \"$avg\": \"$gas_electricity\" },\r\n      \"Elettricita idroelettrica\": { \"$avg\": \"$hydro_electricity\" },\r\n      \"Elettricita di basso carbon\": { \"$avg\": \"$low_carbon_electricity\" },\r\n      \"Elettricita nuclear\": { \"$avg\": \"$nuclear_electricity\" },\r\n      \"Elettricita petrolio\": { \"$avg\": \"$oil_electricity\" },\r\n      \"Altre Elettricita renovable\": { \"$avg\": \"$other_renewable_electricity\" },\r\n      \"Altre Elettricita renovable no carburante\": { \"$avg\": \"$other_renewable_exc_biofuel_electricity\" },\r\n      \"Elettricita Solar\": { \"$avg\": \"$solar_electricity\" },\r\n      \"Elettricita Eolica\": { \"$avg\": \"$wind_electricity\" }\r\n    }\r\n  }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Quali sono le energie nel paese scelto nell'anno selezionato?",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Altre Elettricita renovable": 13,
+              "Altre Elettricita renovable no carburante": 3,
+              "Domanda de elettricita": 0,
+              "Elettricita Eolica": 7,
+              "Elettricita Solar": 8,
+              "Elettricita biocarburante": 4,
+              "Elettricita carbone": 5,
+              "Elettricita di basso carbon": 2,
+              "Elettricita fossile": 10,
+              "Elettricita gas": 11,
+              "Elettricita idroelettrica": 9,
+              "Elettricita nuclear": 6,
+              "Elettricita petrolio": 12,
+              "_id": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 40
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 22,
+        "x": 1,
+        "y": 42
+      },
+      "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"${Paese}\",\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null, \"$ne\": \"NaN\" },\r\n      \"year\": ${Year}\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": null,\r\n      \"Domanda di eletticita\": { \"$avg\": \"$electricity_demand\" },\r\n      \"Elettricita biocarburante\": { \"$avg\": \"$biofuel_electricity\" },\r\n      \"Elettricita carbone\": { \"$avg\": \"$coal_electricity\" },\r\n      \"Elettricita fossile\": { \"$avg\": \"$fossil_electricity\" },\r\n      \"Elettricita gas\": { \"$avg\": \"$gas_electricity\" },\r\n      \"Elettricita idroelettrica\": { \"$avg\": \"$hydro_electricity\" },\r\n      \"Elettricita di basso carbon\": { \"$avg\": \"$low_carbon_electricity\" },\r\n      \"Elettricita nuclear\": { \"$avg\": \"$nuclear_electricity\" },\r\n      \"Elettricita petrolio\": { \"$avg\": \"$oil_electricity\" },\r\n      \"Altre Elettricita renovable\": { \"$avg\": \"$other_renewable_electricity\" },\r\n      \"Altre Elettricita renovable no carburante\": { \"$avg\": \"$other_renewable_exc_biofuel_electricity\" },\r\n      \"Elettricita Solar\": { \"$avg\": \"$solar_electricity\" },\r\n      \"Elettricita Eolica\": { \"$avg\": \"$wind_electricity\" }\r\n    }\r\n  }\r\n]\r\n\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Quali sono le energie nel paese scelto nell'anno selezionato?",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Altre Elettricita renovable": 10,
+              "Altre Elettricita renovable no carburante": 12,
+              "Domanda di eletticita": 0,
+              "Elettricita Eolica": 5,
+              "Elettricita Solar": 3,
+              "Elettricita biocarburante": 4,
+              "Elettricita carbone": 1,
+              "Elettricita di basso carbon": 9,
+              "Elettricita fossile": 6,
+              "Elettricita gas": 2,
+              "Elettricita idroelettrica": 11,
+              "Elettricita nuclear": 7,
+              "Elettricita petrolio": 8
+            },
+            "renameByName": {
+              "Altre Elettricita renovable": "Altre renovabile",
+              "Altre Elettricita renovable no carburante": "Altre renovabile no carburante",
+              "Domanda di eletticita": "Domanda di elettricita",
+              "Elettricita Eolica": "Eolica",
+              "Elettricita Solar": "Solar",
+              "Elettricita biocarburante": "Biocarburante",
+              "Elettricita carbone": "Carbone",
+              "Elettricita di basso carbon": "Basso carbone",
+              "Elettricita fossile": "Fossile",
+              "Elettricita gas": "Gas",
+              "Elettricita idroelettrica": "Idroelettrica",
+              "Elettricita nuclear": "Nucleare",
+              "Elettricita petrolio": "Petrolio"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 360,
+            "axisSoftMin": 300,
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": true,
+          "mappings": [
+            {
+              "options": {
+                "from": 310,
+                "result": {
+                  "color": "green",
+                  "index": 0
+                },
+                "to": 330
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 330,
+                "result": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "to": 349
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 350,
+                "result": {
+                  "color": "dark-red",
+                  "index": 2
+                },
+                "to": 400
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "id": 1,
+      "options": {
+        "barRadius": 0.25,
+        "barWidth": 0.88,
+        "colorByField": "_id",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xField": "_id",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"$Paese\",\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": \"NaN\" },\r\n      \"year\": { \"$gte\": 2000 }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$year\",\r\n      \"avg_demand\": { \"$avg\": \"$electricity_demand\" }\r\n    }\r\n  },\r\n  {\r\n    \"$sort\": { \"_id\": 1 }\r\n  },\r\n  {\r\n    \"$limit\": 24\r\n  }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "electricity_demand"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "timestamp",
+          "valueFieldTypes": [
+            "float64"
+          ],
+          "valueFields": [
+            "measurement"
+          ]
+        }
+      ],
+      "title": "La domanda energetica dal 2000",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds",
+            "seriesBy": "last"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 4,
+            "pointSize": {
+              "fixed": 10
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points+lines"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 53
+      },
+      "id": 8,
+      "options": {
+        "dims": {
+          "exclude": [],
+          "x": "year"
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "series": [],
+        "seriesMapping": "auto",
+        "tooltip": {
+          "mode": "none",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": \"$Paese\",\r\n      \"year\": { \"$gte\": 2000 }\r\n    }\r\n  },\r\n  {\r\n    \"$sort\": {\r\n      \"year\": 1\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$year\",\r\n      \"electricity_demand\": { \"$first\": \"$electricity_demand\" }\r\n    }\r\n  },\r\n  {\r\n    \"$project\": {\r\n      \"_id\": 0,\r\n      \"year\": \"$_id\",\r\n      \"electricity_demand\": 1\r\n    }\r\n  }\r\n]\r\n\r\n\r\n\r\n\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "_id"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "year",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Domanda di elettricità gli ultimi anni",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "year"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "xychart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 61
+      },
+      "id": 10,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "blur": 15,
+              "radius": 18,
+              "weight": {
+                "field": "avg_inflation",
+                "fixed": 1,
+                "max": 1,
+                "min": 0
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "location": {
+              "lookup": "_id",
+              "mode": "lookup"
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "heatmap"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n    {\r\n      \"$match\": {\r\n        \"$Year\": {\"$exists\": true, \"$ne\": null}\r\n      }\r\n    },\r\n    {\r\n      \"$group\": {\r\n        \"_id\": \"$Country\",\r\n        \"avg_inflation\": {\"$avg\": \"$$Year\"}\r\n      }\r\n    },\r\n    {\r\n      \"$sort\": { \"avg_inflation\": -1}\r\n    },\r\n    {\r\n      \"$limit\":  40\r\n    }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "inflation",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Inflazione nell'anno selezionato",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Inflazione",
+            "axisPlacement": "left",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 3,
+            "pointSize": {
+              "fixed": 12
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points+lines"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 61
+      },
+      "id": 12,
+      "options": {
+        "dims": {
+          "x": "avg_inflation"
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "series": [
+          {
+            "pointColor": {
+              "fixed": "dark-green"
+            },
+            "pointSize": {
+              "fixed": 15,
+              "max": 100,
+              "min": 1
+            },
+            "x": "_id",
+            "y": "avg_inflation"
+          }
+        ],
+        "seriesMapping": "manual",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"Country\": \"$Paese\"\r\n    }\r\n  },\r\n  {\r\n    \"$project\": {\r\n      \"Country\": 1,\r\n      \"inflation_data\": {\r\n        \"$objectToArray\": \"$$ROOT\"\r\n      }\r\n    }\r\n  },\r\n  {\r\n    \"$unwind\": \"$inflation_data\"\r\n  },\r\n  {\r\n    \"$match\": {\r\n      \"inflation_data.k\": { \"$regex\": \"^[0-9]{4}$\" },\r\n      \"inflation_data.k\": { \"$gte\": \"2000\" }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$inflation_data.k\",\r\n      \"avg_inflation\": {\r\n        \"$avg\": {\r\n          \"$ifNull\": [\"$inflation_data.v\", 0] \r\n        }\r\n      }\r\n    }\r\n  },\r\n  {\r\n    \"$sort\": {\r\n      \"_id\": 1\r\n    }\r\n  }\r\n]",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "inflation",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 30,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Inflazione paese scelto negli anni ",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {}
+        }
+      ],
+      "type": "xychart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 69
+      },
+      "id": 2,
+      "options": {
+        "displayMode": "gradient",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n    {\r\n      \"$match\": {\r\n        \"$Year\": {\"$exists\": true,\"$ne\": \"NaN\"}\r\n      }\r\n    },\r\n    {\r\n      \"$group\": {\r\n        \"_id\": \"$Country\",\r\n        \"avg_inflation\": {\"$avg\": \"$$Year\"}\r\n      }\r\n    },\r\n    {\r\n      \"$sort\": { \"avg_inflation\": -1}\r\n    },\r\n    {\r\n      \"$limit\": 10\r\n    }\r\n  ]",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "inflation",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Inflazione nell'anno scelto",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 69
+      },
+      "id": 11,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "_id",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"year\": 2018,\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null },\r\n      \"country\": {\r\n        \"$nin\": [\r\n          \"America\",\r\n          \"Lower-middle-income countries\",\r\n          \"Europe\",\r\n          \"North America\",\r\n          \"South America\",\r\n          \"High-income countries\",\r\n          \"Asia\",\r\n          \"Africa\",\r\n          \"Oceania\",\r\n          \"World\",\r\n          \"European Union (27)\",\r\n          \"Upper-middle-income countries\"\r\n        ],\r\n        \"$not\": { \"$regex\": \"Ember\" } \r\n      }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$country\",\r\n      \"max_demand\": { \"$max\": \"$electricity_demand\" }\r\n    }\r\n  },\r\n  {\r\n    \"$sort\": { \"max_demand\": -1 }\r\n  },\r\n  {\r\n    \"$limit\": 10\r\n  }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Massima domanda di energia nell'anno scelto",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "meln5674-mongodb-community",
+        "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 77
+      },
+      "id": 4,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.1",
+      "targets": [
+        {
+          "aggregation": "[\r\n  {\r\n    \"$match\": {\r\n      \"country\": { \"$exists\": true, \"$ne\": null,\r\n              \"$nin\": [\r\n          \"America\",\r\n          \"Lower-middle-income countries\",\r\n          \"Europe\",\r\n          \"North America\",\r\n          \"South America\",\r\n          \"High-income countries\",\r\n          \"Asia\",\r\n          \"Africa\",\r\n          \"Oceania\",\r\n          \"World\",\r\n          \"European Union (27)\",\r\n          \"Upper-middle-income countries\"\r\n        ],\r\n        \"$not\": { \"$regex\": \"Ember\" } },\r\n      \"electricity_demand\": { \"$exists\": true, \"$ne\": null }\r\n    }\r\n  },\r\n  {\r\n    \"$group\": {\r\n      \"_id\": \"$country\", \r\n      \"avg_demand\": { \"$avg\": \"$electricity_demand\" } \r\n    }\r\n  },\r\n  {\r\n    \"$sort\": { \"avg_demand\": -1 } \r\n  },\r\n    {\r\n    \"$limit\":10\r\n  }\r\n]\r\n",
+          "autoTimeBound": false,
+          "autoTimeSort": false,
+          "collection": "energy",
+          "database": "proyect_prove",
+          "datasource": {
+            "type": "meln5674-mongodb-community",
+            "uid": "b440f7cd-4c42-435b-bf69-e85094fbe5bf"
+          },
+          "labelFields": [
+            "sensorID"
+          ],
+          "legendFormat": "",
+          "queryType": "Table",
+          "refId": "A",
+          "schemaInference": true,
+          "schemaInferenceDepth": 20,
+          "timestampField": "timestamp",
+          "timestampFormat": "",
+          "valueFieldTypes": [],
+          "valueFields": []
+        }
+      ],
+      "title": "Promedio di domanda di elettricita in tutto il DB",
+      "type": "gauge"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "2012",
+          "value": "2012"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Year",
+        "options": [
+          {
+            "selected": true,
+            "text": "2012",
+            "value": "2012"
+          },
+          {
+            "selected": false,
+            "text": "2013",
+            "value": "2013"
+          },
+          {
+            "selected": false,
+            "text": "2014",
+            "value": "2014"
+          },
+          {
+            "selected": false,
+            "text": "2015",
+            "value": "2015"
+          },
+          {
+            "selected": false,
+            "text": "2016",
+            "value": "2016"
+          },
+          {
+            "selected": false,
+            "text": "2017",
+            "value": "2017"
+          },
+          {
+            "selected": false,
+            "text": "2018",
+            "value": "2018"
+          },
+          {
+            "selected": false,
+            "text": "2019",
+            "value": "2019"
+          },
+          {
+            "selected": false,
+            "text": "2020",
+            "value": "2020"
+          },
+          {
+            "selected": false,
+            "text": "2021",
+            "value": "2021"
+          },
+          {
+            "selected": false,
+            "text": "2022",
+            "value": "2022"
+          }
+        ],
+        "query": "2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Brazil",
+          "value": "Brazil"
+        },
+        "description": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Paese",
+        "options": [
+          {
+            "selected": false,
+            "text": "Argentina",
+            "value": "Argentina"
+          },
+          {
+            "selected": false,
+            "text": "Italy",
+            "value": "Italy"
+          },
+          {
+            "selected": true,
+            "text": "Brazil",
+            "value": "Brazil"
+          },
+          {
+            "selected": false,
+            "text": "Spain",
+            "value": "Spain"
+          },
+          {
+            "selected": false,
+            "text": "France",
+            "value": "France"
+          },
+          {
+            "selected": false,
+            "text": "Germany",
+            "value": "Germany"
+          },
+          {
+            "selected": false,
+            "text": "United States",
+            "value": "United States"
+          }
+        ],
+        "query": "Argentina, Italy, Brazil, Spain, France, Germany, United States",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "V1.0",
+  "uid": "edf77791-2b1f-47fd-9db6-75d5c9378cad",
+  "version": 1,
+  "weekStart": ""
+}

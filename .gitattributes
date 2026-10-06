@@ -1,0 +1,16 @@
+# Normalizar saltos de línea para evitar problemas entre Windows, Mac y Linux
+* text=auto eol=lf
+
+# Asegurar que los archivos web principales se traten como código
+*.html text
+*.py text
+*.css text
+*.js text
+*.json text
+*.md text
+*.yml text
+
+# Indicar a Linguist que trate las imágenes como archivos de recursos (evita sesgos)
+*.jpg linguist-vendored=true
+*.png linguist-vendored=true
+*.svg linguist-vendored=true
